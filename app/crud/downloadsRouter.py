@@ -12,5 +12,5 @@ downloadsRouter = APIRouter(
 
 @downloadsRouter.get('', status_code=200)
 def downloadAudioRouter(id: int, user: int, db: Session = Depends(get_db)):
-    """ Скачать аудиофайл по id пользователя и uuid аудиофайла """
+    """ Скачать аудиофайл по id аудиофайла и (user)id пользователя """
     return FileResponse(downloadAudio(audioId=id, userId=user, db=db))
