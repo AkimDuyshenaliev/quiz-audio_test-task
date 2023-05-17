@@ -1,7 +1,7 @@
 from fastapi import UploadFile
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
-from app.models import User, Audio
+from app.models import User, AudioFile
 
 from pydub import AudioSegment
 

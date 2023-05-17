@@ -16,8 +16,8 @@ def askQuestion(questions_num: int, db: Session):
             continue
         db_question = Question(
             question_id=questionData[count]['id'],
-            question=questionData[count]['question'],
-            answer=questionData[count]['answer'],
+            question_text=questionData[count]['question'],
+            answer_text=questionData[count]['answer'],
             created_at=questionData[count]['created_at'])
         db.add(db_question)
         db.commit()
