@@ -1,9 +1,13 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 import requests
 from app.models import Question
 
 
 def askQuestion(questions_num: int, db: Session):
+    if questions_num is not int:
+        raise HTTPException(status_code=400, detail='Incorrect input data type')
+
     qNum: int = questions_num if questions_num <= 100 else 100 
     link: str = f'https://jservice.io/api/random?count={qNum}'
     questionData: list = requests.get(link).json()
