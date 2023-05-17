@@ -1,0 +1,37 @@
+version: "3.3"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - network
+    volumes:
+      - data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    restart: always
+    command: bash -c "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}
+    networks:
+      - network
+    volumes:
+      - .:/base
+
+volumes:
+  data: {}
+
+networks:
+  network: 
