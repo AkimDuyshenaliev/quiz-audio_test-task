@@ -1,22 +1,3 @@
-Данные для подключения к PostgreSQL базе данных:
-логин: `user`
-пароль: `password`
-название БД: `dbname`
-host: `0.0.0.0`
-port: `5432`
-
-Пример запроса:
-`0.0.0.0:8000/ask-question?questions_num=75`
-
-Пример запроса на загрузку аудиофайла:
-```
-curl -X 'POST' \
-  'http://0.0.0.0:8000/user/add-audio?userId=4&token=ae1fd0e7-82e4-4760-b710-6c12f1b55dab' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: multipart/form-data' \
-  -F 'file=@TestTask.wav;type=audio/wav'
-```
-
 Сборка/Запуск докер образа:
 `make up`
 
@@ -25,3 +6,41 @@ curl -X 'POST' \
 
 Вывести логи:
 `make logs`
+
+Сделать миграции в alembic:
+`make migrate-alembic`
+
+-------------------
+
+Данные для подключения к PostgreSQL базе данных:
+логин: `user`
+пароль: `password`
+название БД: `dbname`
+host: `0.0.0.0`
+port: `5432`
+
+-------------------
+
+Пример запроса викторины:
+```
+curl --location --request POST '0.0.0.0:8000/ask-question?questions_num=15'
+```
+
+Пример запроса на создание пользователя
+```
+curl --location --request POST '0.0.0.0:8000/user/create?username=AkimDuyshenaliev'
+```
+
+Пример запроса на загрузку аудиофайла:
+```
+curl -X 'POST' \
+  'http://0.0.0.0:8000/user/add-audio?userId=1&token=11ed9adb-5e1a-41af-9c74-90171fc436d5' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'file=@TestTask.wav;type=audio/wav'
+```
+
+Пример запроса на скачивание аудиофайла:
+```
+curl --location '0.0.0.0:8000/record?id=5&user=1'
+```

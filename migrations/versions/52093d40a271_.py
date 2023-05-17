@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 149a2f70abe0
+Revision ID: 52093d40a271
 Revises: 
-Create Date: 2023-05-17 12:25:21.231497
+Create Date: 2023-05-17 15:27:33.775282
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '149a2f70abe0'
+revision = '52093d40a271'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -37,11 +37,11 @@ def upgrade() -> None:
     op.create_index(op.f('ix_user_id'), 'user', ['id'], unique=True)
     op.create_table('audioFile',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('fileUUID', sa.UUID(), nullable=False),
     sa.Column('ownerID', sa.Integer(), nullable=True),
-    sa.Column('fileUUID', sa.String(), nullable=True),
     sa.Column('fileLocation', sa.String(), nullable=True),
     sa.ForeignKeyConstraint(['ownerID'], ['user.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', 'fileUUID')
     )
     op.create_index(op.f('ix_audioFile_id'), 'audioFile', ['id'], unique=True)
     # ### end Alembic commands ###

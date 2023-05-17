@@ -49,19 +49,13 @@ def addAudio(userId: int, token: str, file: UploadFile, url: str, db: Session):
 
     fileLocation='static/%s/%s.mp3' % (userFolder, imageUUID)
     newAudio = AudioFile(
-        fileUUID=imageUUID, 
         ownerID=user.id, 
         fileLocation=fileLocation)
     db.add(newAudio)
     db.commit()
-    # db.refresh(newAudio)
+    db.refresh(newAudio)
 
     parsedURL = urlparse(url)
-    downloadLink = f'{parsedURL.scheme}://{parsedURL.netloc}/'
-    print(downloadLink)
+    downloadLink = f'{parsedURL.scheme}://{parsedURL.netloc}/record?id={newAudio.id}&user={user.id}'
 
-    return {
-        'userID': userId, 
-        'fileUUID': imageUUID, 
-        # 'downloadLink': downloadLink,
-        'fileLocation': 'static/%s/%s.mp3' % (userFolder, imageUUID)}
+    return downloadLink
