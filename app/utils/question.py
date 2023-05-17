@@ -7,6 +7,8 @@ def askQuestion(questions_num: int, db: Session):
     qNum: int = questions_num if questions_num <= 100 else 100 
     link: str = f'https://jservice.io/api/random?count={qNum}'
     questionData: list = requests.get(link).json()
+    if not questionData:
+        return {}
 
     count: int = 0
     while count != qNum:

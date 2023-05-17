@@ -1,4 +1,4 @@
-from fastapi import UploadFile
+from fastapi import UploadFile, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 from app.models import User, AudioFile
@@ -19,13 +19,19 @@ def createUser(username: str, db: Session):
     return {'id': createdUser.id, 'token': createdUser.token}
 
 
-def addAudio(userId: int, file: UploadFile, db: Session):
-    print(userId)
-    user = db.query(User).filter(User.id==userId).first() 
+def addAudio(userId: int, token: str, file: UploadFile, db: Session):
+    if not (user := db.query(User).filter(User.id==userId).first()):
+        raise HTTPException(status_code=404, detail='User not found')
+    if token != str(user.token):
+        raise HTTPException(status_code=403, detail='Wrong access token')
+
     imageUUID = uuid.uuid4()
     userFolder = f'user-{user.id}-{user.username}'
     convertedFileName = f'{imageUUID}.mp3'
-    os.mkdir(f'static/{userFolder}')
+    try:
+        os.mkdir(f'static/{userFolder}')
+    except FileExistsError:
+        pass
 
     # сохранить wav
     with open(f"static/{userFolder}/{file.filename}", "wb") as buffer:
@@ -40,4 +46,14 @@ def addAudio(userId: int, file: UploadFile, db: Session):
     except OSError:
         pass
 
-    # newAudio = Audio(ownerUserId=)
+    newAudio = AudioFile(
+        fileUUID=imageUUID, 
+        ownerID=userId, 
+        fileLocation='static/%s/%s.mp3' % (userFolder, imageUUID))
+    db.add(newAudio)
+    db.commit()
+
+    return {
+        'userID': userId, 
+        'fileUUID': imageUUID, 
+        'fileLocation': 'static/%s/%s.mp3' % (userFolder, imageUUID)}

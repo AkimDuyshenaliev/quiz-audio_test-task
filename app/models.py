@@ -21,8 +21,8 @@ class AudioFile(Base):
     __tablename__ = "audioFile"
 
     id = Column(Integer, primary_key=True, unique=True, index=True, autoincrement=True)
+    fileUUID = Column(String, primary_key=True, unique=True)
     ownerID = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
-    fileUUID = Column(String)
     fileLocation = Column(String)
 
 

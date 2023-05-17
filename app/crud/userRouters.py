@@ -16,6 +16,6 @@ def createUserRouter(username: str, db: Session = Depends(get_db)):
 
 
 @userRouter.post('/add-audio', status_code=200)
-def addAudioRuter(userId:int, file: UploadFile, db: Session = Depends(get_db)):
-    """ Загрузить аудиофайл по id и токену """
-    return addAudio(userId=userId, file=file, db=db)
+def addAudioRuter(userId:int, token: str, file: UploadFile, db: Session = Depends(get_db)):
+    """ Загрузить аудиофайл по id пользователя """
+    return addAudio(userId=userId, token=token, file=file, db=db)
