@@ -4,5 +4,5 @@ from app.models import User, AudioFile
 
 
 def downloadAudio(audioId, userId, db) -> str:
-    user = User(id=userId)
-    file = AudioFile(fileUUID=audioId)
+    file = db.query(AudioFile).filter(AudioFile.ownerID==userId, AudioFile.id==audioId).first()
+    return file.fileLocation

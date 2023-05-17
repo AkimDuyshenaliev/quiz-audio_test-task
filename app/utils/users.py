@@ -2,6 +2,7 @@ from fastapi import UploadFile, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 from app.models import User, AudioFile
+from urllib.parse import urlparse
 
 from pydub import AudioSegment
 
@@ -19,7 +20,7 @@ def createUser(username: str, db: Session):
     return {'id': createdUser.id, 'token': createdUser.token}
 
 
-def addAudio(userId: int, token: str, file: UploadFile, db: Session):
+def addAudio(userId: int, token: str, file: UploadFile, url: str, db: Session):
     if not (user := db.query(User).filter(User.id==userId).first()):
         raise HTTPException(status_code=404, detail='User not found')
     if token != str(user.token):
@@ -46,14 +47,21 @@ def addAudio(userId: int, token: str, file: UploadFile, db: Session):
     except OSError:
         pass
 
+    fileLocation='static/%s/%s.mp3' % (userFolder, imageUUID)
     newAudio = AudioFile(
         fileUUID=imageUUID, 
-        ownerID=userId, 
-        fileLocation='static/%s/%s.mp3' % (userFolder, imageUUID))
+        ownerID=user.id, 
+        fileLocation=fileLocation)
     db.add(newAudio)
     db.commit()
+    # db.refresh(newAudio)
+
+    parsedURL = urlparse(url)
+    downloadLink = f'{parsedURL.scheme}://{parsedURL.netloc}/'
+    print(downloadLink)
 
     return {
         'userID': userId, 
         'fileUUID': imageUUID, 
+        # 'downloadLink': downloadLink,
         'fileLocation': 'static/%s/%s.mp3' % (userFolder, imageUUID)}
