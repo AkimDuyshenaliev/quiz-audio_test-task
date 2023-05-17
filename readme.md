@@ -1,14 +1,31 @@
-Сборка/Запуск докер образа:
-`make up`
+При наличии Makefile установленного на системе
+проект собирается/запускается следующим образом:
+  Сборка/Запуск докер образа:
+  `make up`
 
-Остановить докер образ:
-`make down`
+  Остановить докер образ:
+  `make down`
 
-Вывести логи:
-`make logs`
+  Вывести логи:
+  `make logs`
 
-Сделать миграции в alembic:
-`make migrate-alembic`
+  Сделать миграции в alembic:
+  `make migrate-alembic`
+
+При отсутствии Makefile:
+  Сборка/Запуск докер образа:
+  `docker compose up -d`
+
+  Остановить докер образ:
+  `docker compose down`
+
+  Вывести логи:
+  `docker compose logs app -f`
+
+  Сделать миграции в alembic:
+  `docker compose exec app alembic revision --autogenerate`
+  `docker compose exec app alembic upgrade head`
+
 
 -------------------
 
@@ -20,6 +37,8 @@ host: `0.0.0.0`
 port: `5432`
 
 -------------------
+
+Автогенерируемая документация доступна на `http://0.0.0.0:8000/docs`
 
 Пример запроса викторины:
 ```
