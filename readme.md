@@ -1,42 +1,26 @@
 При наличии Makefile установленного на системе
 проект собирается/запускается следующим образом:
 
-*Сборка/Запуск докер образа:
-
-  *`make up`
-
-*Остановить докер образ:
-
-  *`make down`
-
-*Вывести логи:
-
-  *`make logs`
-
-*Сделать миграции в alembic:
-
-  *`make migrate-alembic`
+* Сборка/Запуск докер образа:
+  * `make up`
+* Остановить докер образ:
+  * `make down`
+* Вывести логи:
+  * `make logs`
+* Сделать миграции в alembic:
+  * `make migrate-alembic`
 
 При отсутствии Makefile:
 
-*Сборка/Запуск докер образа:
-
-  *`docker compose up -d`
-
-*Остановить докер образ:
-
-  *`docker compose down`
-
-*Вывести логи:
-
-  *`docker compose logs app -f`
-
-*Сделать миграции в alembic:
-
-  *`docker compose exec app alembic revision --autogenerate`
-
-  *`docker compose exec app alembic upgrade head`
-
+* Сборка/Запуск докер образа:
+  * `docker compose up -d`
+* Остановить докер образ:
+  * `docker compose down`
+* Вывести логи:
+  * `docker compose logs app -f`
+* Сделать миграции в alembic:
+  * `docker compose exec app alembic revision --autogenerate`
+  * `docker compose exec app alembic upgrade head`
 
 -------------------
 
