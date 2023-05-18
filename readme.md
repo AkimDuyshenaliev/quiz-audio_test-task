@@ -13,7 +13,7 @@
 * Вывести логи: `docker compose logs app -f`
 * Сделать миграции в alembic: 
   * `docker compose exec app alembic revision --autogenerate`
-  `docker compose exec app alembic upgrade head`
+  * `docker compose exec app alembic upgrade head`
 
 -------------------
 
