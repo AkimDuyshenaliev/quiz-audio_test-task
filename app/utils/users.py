@@ -12,19 +12,20 @@ import uuid
 
 
 def createUser(username: str, db: Session):
-    if username is not str:
+    if type(username) is not str:
         raise HTTPException(status_code=400, detail='Incorrect input data type')
 
     newUser = User(username=username)
     db.add(newUser)
     db.commit()
     db.refresh(newUser)
-    createdUser: object = db.query(User).filter(User.username==username).order_by(desc(User.id)).first() 
-    return {'id': createdUser.id, 'token': createdUser.token}
+    # createdUser: object = db.query(User).filter(User.username==username).order_by(desc(User.id)).first() 
+    # return {'id': createdUser.id, 'token': createdUser.token}
+    return {'id': newUser.id, 'token': newUser.token}
 
 
 def addAudio(userId: int, token: str, file: UploadFile, url: str, db: Session):
-    if userId is not int or token is not str:
+    if type(userId) is not int or type(token) is not str:
         raise HTTPException(status_code=400, detail='Incorrect input data type')
     if file.content_type != 'audio/wav':
         raise HTTPException(status_code=415, detail='Not audio file or not ".wav"')

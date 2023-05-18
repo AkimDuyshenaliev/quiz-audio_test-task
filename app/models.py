@@ -15,7 +15,8 @@ class User(Base):
     id = Column(Integer, primary_key=True, unique=True, index=True, autoincrement=True)
     token = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4) 
     username = Column(String)
-    audioFiles = relationship('AudioFile', backref='user')
+
+    _audioFiles = relationship("AudioFile")
 
 
 class AudioFile(Base):
@@ -23,7 +24,7 @@ class AudioFile(Base):
 
     id = Column(Integer, primary_key=True, unique=True, index=True, autoincrement=True)
     fileUUID = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    ownerID = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
+    ownerID = Column(ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
     fileLocation = Column(String)
 
 
